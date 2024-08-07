@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-
+    
 @endsection
 
 @push('scripts')
@@ -67,6 +67,14 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false },
                 ],
             });
+            $('#table-1').on('click','.hapusPenduduk',function (e) {
+                e = $(this).data('id');
+                console.log(e);
+            })
+            // $('.hapusPenduduk').click(function(e){
+            //     e = 'uhuyy';
+            //     console.log(e);
+            // })
     });
 </script>
     

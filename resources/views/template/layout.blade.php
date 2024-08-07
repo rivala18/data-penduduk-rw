@@ -74,7 +74,8 @@
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
               <ul class="dropdown-menu">
-                <li><a class="nav-link" href="#">Data Penduduk</a></li>
+                <li><a class="nav-link" href=" {{route('data.penduduk')}} ">Data Penduduk</a></li>
+                <li><a class="nav-link" href=" {{route('penduduk.input')}} ">Input Data Penduduk</a></li>
                 {{-- <li><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li> --}}
               </ul>
             </li>

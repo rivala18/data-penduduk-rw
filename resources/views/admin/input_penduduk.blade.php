@@ -170,6 +170,10 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
+                                    <label for="No.Hp">No.Hp</label>
+                                    <input type="text" name="no_hp" id="no_hp" name="no_hp" class="form-control" placeholder="Opsional">
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label class="custom-switch mt-2">
                                         <input type="checkbox" name="tambahkan_kk" class="custom-switch-input" value="tambah_kk">
                                         <span class="custom-switch-indicator"></span>
@@ -195,7 +199,7 @@
 <script>
     $('#inputData').click(function () {
         form = $('#formPenduduk').serialize();
-        // console.log(form);
+        console.log(form);
         // $('.form-control').addClass('is-valid');
         $('.form-control').removeClass('is-invalid');
         $('.invalid-feedback').text('');
@@ -210,7 +214,7 @@
                 $('#formPenduduk')[0].reset()
             }, 
             error: function (response) {
-                // console.log(response.responseJSON.errors);
+                console.log(response.responseJSON.errors);
                 errors = response.responseJSON.errors;
                 if (errors) {
                     if(errors.golongan_keluarga) {

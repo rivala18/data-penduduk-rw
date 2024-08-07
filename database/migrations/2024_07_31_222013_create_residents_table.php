@@ -17,6 +17,7 @@ class CreateResidentsTable extends Migration
             $table->id();
             $table->string('nik', 16)->unique(); // Nomor Induk Kependudukan
             $table->string('nama');
+            $table->text('alamat'); // Alamat Lengkap
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);

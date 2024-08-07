@@ -41,6 +41,7 @@ class PendudukController extends Controller
             'status_perkawinan'=>'required|min:3|max:20',
             'pekerjaan'=>'required|min:3|max:20',
             'kewarganegaraan'=>'required|min:3|max:20',
+            // 'no_hp'=>'numeric'
         ],[
             'nama.required'=>'Nama harus di isi!!!',
             'nik.required'=>'NIK harus di isi angka!!!',
@@ -90,7 +91,8 @@ class PendudukController extends Controller
             'pekerjaan.max'=>'pekerjaan harus di isi maksimal 20 huruf!!!',
             'kewarganegaraan.max'=>'kewarganegaraan harus di isi maksimal 20 huruf!!!',
             'agama.max'=>'agama harus di isi maksimal 20 huruf!!!',
-            'tanggal_lahir.date'=>'Tanggal lahir harus di isi tanggal!!!'
+            'tanggal_lahir.date'=>'Tanggal lahir harus di isi tanggal!!!',
+            // 'no_hp.numeric'=>'No.Hp harus di isi dengan angka'
         ]);
         
     }
@@ -121,7 +123,6 @@ class PendudukController extends Controller
             FamilyRegistrationCard::create([
                 'no_kk' => $request->no_kk,
                 'kepala_keluarga' => $request->nama,
-                'alamat' => $request->alamat,
                 'rt' => $request->rt,
                 'rw' => $request->rw,
                 'kelurahan' => $request->kelurahan,
@@ -133,6 +134,7 @@ class PendudukController extends Controller
             Resident::create([
                 'nik'=>$request->nik,
                 'nama'=>$request->nama,
+                'alamat' => $request->alamat,
                 'tempat_lahir'=>$request->tempat_lahir,
                 'tanggal_lahir'=>$request->tanggal_lahir,
                 'jenis_kelamin'=>$request->jenis_kelamin,
@@ -142,7 +144,8 @@ class PendudukController extends Controller
                 'pekerjaan'=>$request->pekerjaan,
                 'pendidikan_terakhir'=>$request->pendidikan_terakhir,
                 'kewarganegaraan'=>$request->kewarganegaraan,
-                'no_kk'=>$request->no_kk
+                'no_kk'=>$request->no_kk,
+                'no_hp'=>$request->no_hp
             ]);
             return response()->json([
                 'status' => 'success',
@@ -153,6 +156,7 @@ class PendudukController extends Controller
         Resident::create([
             'nik'=>$request->nik,
             'nama'=>$request->nama,
+            'alamat' => $request->alamat,
             'tempat_lahir'=>$request->tempat_lahir,
             'tanggal_lahir'=>$request->tanggal_lahir,
             'jenis_kelamin'=>$request->jenis_kelamin,
@@ -162,7 +166,8 @@ class PendudukController extends Controller
             'pekerjaan'=>$request->pekerjaan,
             'pendidikan_terakhir'=>$request->pendidikan_terakhir,
             'kewarganegaraan'=>$request->kewarganegaraan,
-            'no_kk'=>$request->no_kk
+            'no_kk'=>$request->no_kk,
+            'no_hp'=>$request->no_hp
         ]);
 
         return response()->json([
@@ -171,8 +176,9 @@ class PendudukController extends Controller
         ], 200);
         
     }
-    public function editData() {
-        return 1;
+    public function editDataPenduduk($id) {
+        $data = $this->resident->find($id);
+        return $data->kartuKeluarga->kecamatan;
     }
     public function getData() {
         $penduduk = Resident::orderBy('nama','asc')->get();
@@ -195,8 +201,8 @@ class PendudukController extends Controller
                         <i class="far fa-edit">
                         </i>
                     </a> 
-                    <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-danger btn-icon btn-sm">
-                        <i class="fas fa-times">
+                    <a href="#table-1" class="btn btn-danger btn-icon btn-sm hapusPenduduk" data-id="'.$row->id.'">
+                        <i class="fas fa-trash">
                         </i>
                     </a> 
                     <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-info btn-icon btn-sm">

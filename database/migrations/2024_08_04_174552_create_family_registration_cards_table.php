@@ -17,7 +17,6 @@ class CreateFamilyRegistrationCardsTable extends Migration
             $table->id(); // Primary key
             $table->string('no_kk')->unique(); // Nomor Kartu Keluarga
             $table->string('kepala_keluarga'); // Nama Kepala Keluarga
-            $table->text('alamat'); // Alamat Lengkap
             $table->string('rt')->nullable(); // RT
             $table->string('rw')->nullable(); // RW
             $table->string('kelurahan'); // Kelurahan
