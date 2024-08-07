@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('template.layout');
 });
-Route::get('/admin/penduduk', [PendudukController::class, 'index'])->name('penduduk.index');
-Route::post('/admin/penduduk/data', [PendudukController::class, 'store'])->name('penduduk.create');
-Route::get('admin/penduduk/data',[PendudukController::class,'getData'])->name('penduduk.data');
-Route::get('admin/penduduk/data/edit/{id}',[PendudukController::class,'editData'])->name('penduduk.edit');
+Route::get('/admin/data-penduduk', [PendudukController::class,'dataPenduduk'])->name('data.penduduk'); //return view table penduduk
+Route::get('/admin/input-data/penduduk', [PendudukController::class, 'inputDataPenduduk'])->name('penduduk.input'); //return view form input penduduk
+Route::post('/admin/input-data/pendudukw', [PendudukController::class, 'store'])->name('penduduk.create'); //save data penduduk
+Route::get('admin/get-data-penduduk',[PendudukController::class,'getData'])->name('penduduk.data'); //get data for data table
+Route::get('admin/data/penduduk/edit/{id}',[PendudukController::class,'editData'])->name('penduduk.edit'); //edit data penduduk

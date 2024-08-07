@@ -94,10 +94,13 @@ class PendudukController extends Controller
         ]);
         
     }
-    public function index() {
+    public function dataPenduduk() {
+        return view('admin.data_penduduk');
+    }
+    public function inputDataPenduduk() {
         $data = Resident::get();
         // dd($data->kartuKeluarga->rt);
-        return view('admin.index',[
+        return view('admin.input_penduduk',[
             'data'=>$this->resident
         ]);
     }
@@ -203,21 +206,6 @@ class PendudukController extends Controller
                     ';
                     
             })
-            // ->addColumn('hapus', function($row){
-            //     return '
-            //         <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-danger btn-icon btn-sm">
-            //             <i class="fas fa-times">
-            //             </i>
-            //         </a>';
-            // })
-            // ->addColumn('detail', function($row){
-            //     return '
-            //         <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-info btn-icon btn-sm">
-            //             <i class="fas fa-info-circle"></i>
-            //             </i>
-            //         </a>';
-                    
-            // })
             ->make(true);
     }
     
