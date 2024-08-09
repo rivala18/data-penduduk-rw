@@ -1,4 +1,7 @@
 @extends('template.layout')
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 
 @section('title'. 'Data Penduduk')
 
@@ -29,6 +32,7 @@
                                         <th>Tempat Lahir</th>
                                         <th>RT</th>
                                         <th>Golongan Keluarga</th>
+                                        <th>Status Dalam Keluarga</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -64,12 +68,44 @@
                     { data: 'tempat_lahir', name: 'tempat_lahir' },
                     { data: 'rt', name: 'rt' },
                     { data: 'golongan_keluarga', name: 'golongan_keluarga' },
+                    { data: 'status_dalam_keluarga', name: 'status_dalam_keluarga' },
                     { data: 'action', name: 'action', orderable: false, searchable: false },
                 ],
             });
             $('#table-1').on('click','.hapusPenduduk',function (e) {
                 e = $(this).data('id');
-                console.log(e);
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                table = $('#table-1').DataTable();
+                swal({
+                    title: 'Apakah kamu yakin ingin menghapus?',
+                    text: 'data yang di hapus tidak akan kembali',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '{{route('penduduk.delete')}}',
+                            method: 'post',
+                            data: {
+                                _token: csrfToken,
+                                id: e
+                            },success: function (response) {
+                                // console.log(response);
+                                table.ajax.reload();
+                            },error: function (response) {
+                                // console.log(response);
+                            }
+
+                        })
+                    swal('Data berhasil di hapus'+e, {
+                        icon: 'success',
+                    });
+                    } else {
+                    swal('Data tidak dihapus');
+                    }
+                });
             })
             // $('.hapusPenduduk').click(function(e){
             //     e = 'uhuyy';

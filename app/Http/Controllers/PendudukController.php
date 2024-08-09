@@ -21,7 +21,7 @@ class PendudukController extends Controller
     public function _validation($request) {
         $request->validate([        //validasi input
             'nama'=>'required|min:1',
-            'nik'=>'required|unique:residents,nik|numeric',
+            // 'nik'=>'required|numeric',
             'no_kk'=>'required|numeric',
             // 'no_kk'=>'required|unique:family_registration_cards,no_kk|numeric',
             'tempat_lahir'=>'required|min:3',
@@ -80,7 +80,7 @@ class PendudukController extends Controller
             'kewarganegaraan.min'=>'Kewarganegaraan harus di isi minimal 3 huruf!!!',
             'alamat.max'=>'Alamat harus di isi maksimal 255 huruf!!!',
             // 'no_kk.unique'=>'No.KK sudah terdaftar!!!',
-            'nik.unique'=>'NIK sudah terdaftar!!!',
+            // 'nik.unique'=>'NIK sudah terdaftar!!!',
             'no_kk.numeric'=>'No,KK harus di isi angka!!!',
             'nik.numeric'=>'NIK harus di isi angka!!!',
             'rw.numeric'=>'RW harus di isi angka!!!',
@@ -109,16 +109,19 @@ class PendudukController extends Controller
     public function store(Request $request) {
         $this->_validation($request);
         // dd($request->all());
-        if ($request->tambahkan_kk) {
+        $no_kk = FamilyRegistrationCard::where('no_kk',$request->no_kk)->first();
+
+        if ($request->status_dalam_keluarga =='Kepala Keluarga') {
             $request->validate([
-                'no_kk'=>'required|unique:family_registration_cards,no_kk|numeric',
+                    'no_kk'=>'required|unique:family_registration_cards,no_kk|numeric',
                 ],
                 [
                     'no_kk.unique'=>'NO.KK Sudah terdaftar!!!',
                     'no_kk.required'=>'No,KK harus di isi!!!',
                     'no_kk.numeric'=>'No,KK harus di isi angka!!!',
 
-            ]);
+                ]);
+
             
             FamilyRegistrationCard::create([
                 'no_kk' => $request->no_kk,
@@ -151,34 +154,115 @@ class PendudukController extends Controller
                 'status' => 'success',
                 'message' => 'Data berhasil disimpan beserta kartu keluarga'
             ], 200);
-        }
-        // Proses penyimpanan data penduduk
-        Resident::create([
-            'nik'=>$request->nik,
-            'nama'=>$request->nama,
-            'alamat' => $request->alamat,
-            'tempat_lahir'=>$request->tempat_lahir,
-            'tanggal_lahir'=>$request->tanggal_lahir,
-            'jenis_kelamin'=>$request->jenis_kelamin,
-            'agama'=>$request->agama,
-            'status_perkawinan'=>$request->status_perkawinan,
-            'status_dalam_keluarga'=>$request->status_dalam_keluarga,
-            'pekerjaan'=>$request->pekerjaan,
-            'pendidikan_terakhir'=>$request->pendidikan_terakhir,
-            'kewarganegaraan'=>$request->kewarganegaraan,
-            'no_kk'=>$request->no_kk,
-            'no_hp'=>$request->no_hp
-        ]);
+        } else{
+            if(!$no_kk){
+                return response()->json([
+                    'status'=>'error',
+                    'message'=>'No kk belum terdaftar, silahkan pilih kepala keluarga untuk menambahkan data kartu keluarga'
+                ]);
+                // return true;
+            } 
+            else {
+                $request->validate([
+                        'nik'=>'required|unique:residents,nik|numeric'
+                    ],
+                    [
+                        'nik.required'=>'NIK harus di isi angka!!!',
+                        'nik.unique'=>'NIK Sudah terdaftar!!!',
+                        'nik.numeric'=>'NIK harus di isi dengan angka!!!'
+                    ]
+                );
+                // Proses penyimpanan data penduduk
+                Resident::create([
+                    'nik'=>$request->nik,
+                    'nama'=>$request->nama,
+                    'alamat' => $request->alamat,
+                    'tempat_lahir'=>$request->tempat_lahir,
+                    'tanggal_lahir'=>$request->tanggal_lahir,
+                    'jenis_kelamin'=>$request->jenis_kelamin,
+                    'agama'=>$request->agama,
+                    'status_perkawinan'=>$request->status_perkawinan,
+                    'status_dalam_keluarga'=>$request->status_dalam_keluarga,
+                    'pekerjaan'=>$request->pekerjaan,
+                    'pendidikan_terakhir'=>$request->pendidikan_terakhir,
+                    'kewarganegaraan'=>$request->kewarganegaraan,
+                    'no_kk'=>$request->no_kk,
+                    'no_hp'=>$request->no_hp
+                ]);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Data berhasil disimpan'
+                ], 200);
+        
+    
+            }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data berhasil disimpan'
-        ], 200);
+        }
         
     }
     public function editDataPenduduk($id) {
         $data = $this->resident->find($id);
-        return $data->kartuKeluarga->kecamatan;
+        // return $data->kartuKeluarga->kecamatan;
+        return view('admin.edit_penduduk',[
+            'data'=>$data
+        ]);
+    }
+    public function updateDataPenduduk(Request $request) {
+        $no_kk = FamilyRegistrationCard::where('no_kk',$request->no_kk)->first();
+        // $data = $this->resident->find($request->id);
+        $this->_validation($request);
+        // dd($no_kk);
+        $validation = $request->validate([
+            'nik'=>'required|numeric',
+            'no_kk'=>'required|numeric'
+        ],
+        [
+            'nik.required'=>'NIK harus di isi angka!!!',
+            'nik.numeric'=>'NIK harus di isi dengan angka!!!',
+            'no_kk.required'=>'No,KK harus di isi!!!',
+            'no_kk.numeric'=>'No,KK harus di isi angka!!!','no_kk.required'=>'No,KK harus di isi!!!'
+        ]);
+        if(!$no_kk){
+            return response()->json([
+                'status'=>'error',
+                'message'=>'Kartu keluarga belum terdaftar silahkan tambahkan data kartu keluarga terlebih dahulu'
+            ]);
+            // return true;
+        } 
+        else {
+            Resident::where('nik',$request->nik)->update([
+                'nik'=>$request->nik,
+                'nama'=>$request->nama,
+                'alamat' => $request->alamat,
+                'tempat_lahir'=>$request->tempat_lahir,
+                'tanggal_lahir'=>$request->tanggal_lahir,
+                'jenis_kelamin'=>$request->jenis_kelamin,
+                'agama'=>$request->agama,
+                'status_perkawinan'=>$request->status_perkawinan,
+                'status_dalam_keluarga'=>$request->status_dalam_keluarga,
+                'pekerjaan'=>$request->pekerjaan,
+                'pendidikan_terakhir'=>$request->pendidikan_terakhir,
+                'kewarganegaraan'=>$request->kewarganegaraan,
+                'no_kk'=>$request->no_kk,
+                'no_hp'=>$request->no_hp
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan'
+            ], 200);
+        }
+    }
+    public function hapusDataPenduduk(Request $request) {
+        $data = $this->resident->find($request->id);
+        if ($data->status_dalam_keluarga == 'Kepala Keluarga') {
+            Resident::where('no_kk',$data->no_kk)->delete();
+            FamilyRegistrationCard::where('no_kk',$data->no_kk)->delete();
+            return 'menghapus kepala keluarga';
+        } else{
+            Resident::where('id',$request->id)->delete();
+            return 'Menghapus anggota keluarga';
+
+        }
     }
     public function getData() {
         $penduduk = Resident::orderBy('nama','asc')->get();

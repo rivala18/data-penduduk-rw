@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="date" class="form-control" name="tanggal_lahir" idw="tanggal_lahir">
+                                    <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir">
                                     <div class="invalid-feedback" id="error-tanggal_lahir"></div>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -114,6 +114,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="status_dalam_keluarga">Status Dalam Keluarga</label>
                                     <select name="status_dalam_keluarga" id="status_dalam_keluarga" class="form-control">
+                                        <option value=""></option>
                                         <option value="Kepala Keluarga">Kepala Keluarga</option>
                                         <option value="Ayah">Ayah</option>
                                         <option value="Ibu">Ibu</option>
@@ -128,9 +129,7 @@
                                         <option value="Ayah Tiri">Ayah Tiri</option>
                                         <option value="Ibu Tiri">Ibu Tiri</option>
                                         <option value="Keponakan">Keponakan</option>
-                                        <option value="Anak Pungut">Anak Pungut</option>
                                     </select>
-                                    {{-- <input type="text" name="status_dalam_keluarga" id="status_dalam_keluarga" class="form-control"> --}}
                                     <div class="invalid-feedback" id="error-status_dalam_keluarga"></div>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -174,13 +173,6 @@
                                     <input type="text" name="no_hp" id="no_hp" name="no_hp" class="form-control" placeholder="Opsional">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="custom-switch mt-2">
-                                        <input type="checkbox" name="tambahkan_kk" class="custom-switch-input" value="tambah_kk">
-                                        <span class="custom-switch-indicator"></span>
-                                        <span class="custom-switch-description">Tambahkan KK</span>
-                                      </label>
-                                </div>
-                                <div class="form-group col-md-3">
                                     <button type="button" class="btn btn-lg btn-primary" id="inputData">Input</button>
                                 </div>
                             </div>
@@ -209,9 +201,17 @@
             data: form,
             success: function (response) {
                 console.log(response);
-                // swal('Sukses', 'Berhasil input data,'success');
-                swal('Sukses',response.message,'success');
-                $('#formPenduduk')[0].reset()
+                if (response.status == 'error') {
+                    swal('Gagal',response.message,'error');
+                    $('#error-no_kk').text(response.message)
+                    $('#no_kk').addClass('is-invalid');
+                    $('#error-no_kk').text(response.message)
+                    
+                } else if (response.status == 'success') {
+                    swal('Sukses',response.message,'success');
+                    // $('#formPenduduk')[0].reset()
+                    
+                }
             }, 
             error: function (response) {
                 console.log(response.responseJSON.errors);

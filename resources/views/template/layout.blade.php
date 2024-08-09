@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  @yield('csrf')
   <title>@yield('title')</title>
 
   <!-- General CSS Files -->
@@ -10,7 +11,6 @@
   <link rel="stylesheet" href={{asset('assets/modules/fontawesome/css/all.min.css')}}>
 
   <!-- CSS Libraries -->
-  lin
   <link rel="stylesheet" href={{asset('assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.css')}}>
   <link rel="stylesheet" href={{asset('assets/modules/datatables/scroller.bootstrap4.css')}}>
   {{-- <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.4.3/css/scroller.bootstrap4.css"> --}}

@@ -19,19 +19,42 @@
                         <form action="#" id="formPenduduk" class="needs-validation" novalidate>
                             @csrf
                             <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="alamat">Alamat</label>
+                                    <input type="text" name="alamat" id="alamat" class="form-control" value="{{$data->alamat}}">
+                                    <input type="hidden" name="id_penduduk" id="id_penduduk" class="form-control" value="{{$data->id}}">
+                                    <div class="invalid-feedback" id="error-alamat"></div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="rt">RT</label>
+                                    <input type="number" name="rt" id="rt" class="form-control" value="{{$data->kartuKeluarga->rt}}">
+                                    <div class="invalid-feedback" id="error-rt"></div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="rw">RW</label>
+                                    <input type="number" name="rw" id="rw" class="form-control disable" value="{{$data->kartuKeluarga->rw}}" readonly>
+                                    <div class="invalid-feedback" id="error-rw"></div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="kabupaten">Kabupaten/Kota</label>
+                                    <input type="text" name="kabupaten_kota" id="kabupaten_kota" class="form-control" value="{{$data->kartuKeluarga->kabupaten_kota}}" readonly>
+                                    <div class="invalid-feedback" id="error-kabupaten_kota"></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="no_kk">NO KK</label>
-                                    <input type="number" class="form-control" name="no_kk" id="no_kk">
+                                    <input type="number" class="form-control" name="no_kk" id="no_kk" value="{{$data->no_kk}}">
                                     <div class="invalid-feedback" id="error-no_kk"></div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="nama">Nama Lengkap</label>
-                                    <input type="text" class="form-control" name="nama" id="nama">
+                                    <input type="text" class="form-control" name="nama" id="nama" value="{{$data->nama}}">
                                     <div class="invalid-feedback" id="error-nama"></div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="nik">NIK</label>
-                                    <input type="number" class="form-control" name="nik" id="nik">
+                                    <input type="number" class="form-control" name="nik" id="nik" value="{{$data->nik}}">
                                     <div class="invalid-feedback" id="error-nik"></div>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -47,17 +70,18 @@
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="tempat_lahir">Tempat Lahir</label>
-                                    <input type="text" class="form-control" name="tempat_lahir" id="tempat_lahir">
+                                    <input type="text" class="form-control" name="tempat_lahir" id="tempat_lahir" value="{{$data->tempat_lahir}}">
                                     <div class="invalid-feedback" id="error-tempat_lahir"></div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="tanggal_lahir">Tanggal Lahir</label>
-                                    <input type="date" class="form-control" name="tanggal_lahir" idw="tanggal_lahir">
+                                    <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir" value="{{$data->tanggal_lahir}}">
                                     <div class="invalid-feedback" id="error-tanggal_lahir"></div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="agama">Agama</label>
                                     <select name="agama" id="agama" class="form-control">Agama
+                                        <option value="{{$data->agama}}">{{$data->agama}}</option>
                                         <option value="islam">Islam</option>
                                         <option value="kristen_protestan">Kristen Protestan</option>
                                         <option value="katolik">Katolik</option>
@@ -69,7 +93,7 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="pendidikan_terakhir">Pendidikan Terakhir</label>
-                                    <input type="text" class="form-control" name="pendidikan_terakhir" id="pendidikan_terakhir">
+                                    <input type="text" class="form-control" name="pendidikan_terakhir" id="pendidikan_terakhir" value="{{$data->pendidikan_terakhir}}">
                                     <div class="invalid-feedback" id="error-pendidikan_terakhir"></div>
                                 </div>
 
@@ -77,12 +101,13 @@
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="pekerjaan">Pekerjaan</label>
-                                    <input type="text" name="pekerjaan" id="pekerjaan" class="form-control">
+                                    <input type="text" name="pekerjaan" id="pekerjaan" class="form-control" value="{{$data->pekerjaan}}">
                                     <div class="invalid-feedback" id="error-pekerjaan"></div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="status_perkawinan">Status Perkawinan</label>
                                     <select name="status_perkawinan" id="status_perkawinan" class="form-control">
+                                        <option value="{{$data->status_perkawinan}}">{{$data->status_perkawinan}}</option>
                                         <option value="menikah">Menikah</option>
                                         <option value="Belum Menikah">Belum Menikah</option>
                                     </select>
@@ -92,6 +117,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="status_dalam_keluarga">Status Dalam Keluarga</label>
                                     <select name="status_dalam_keluarga" id="status_dalam_keluarga" class="form-control">
+                                        <option value="{{$data->status_dalam_keluarga}}"> {{$data->status_dalam_keluarga}} </option>
                                         <option value="Kepala Keluarga">Kepala Keluarga</option>
                                         <option value="Ayah">Ayah</option>
                                         <option value="Ibu">Ibu</option>
@@ -106,19 +132,49 @@
                                         <option value="Ayah Tiri">Ayah Tiri</option>
                                         <option value="Ibu Tiri">Ibu Tiri</option>
                                         <option value="Keponakan">Keponakan</option>
-                                        <option value="Anak Pungut">Anak Pungut</option>
                                     </select>
-                                    {{-- <input type="text" name="status_dalam_keluarga" id="status_dalam_keluarga" class="form-control"> --}}
                                     <div class="invalid-feedback" id="error-status_dalam_keluarga"></div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="kewarganegaraan">Kewarganegaraan</label>
-                                    <input type="text" name="kewarganegaraan" id="kewarganegaraan" class="form-control" readonly value="Indonesia">
+                                    <input type="text" name="kewarganegaraan" id="kewarganegaraan" class="form-control" readonly value="Indonesia" value="{{$data->kewarganegaraan}}">
                                     <div class="invalid-feedback" id="error-kewarganegaraan"></div>
                                 </div>
 
                                 
                             </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="kelurahan">Kelurahan</label>
+                                    <input type="text" name="kelurahan" id="kelurahan" class="form-control" value="Babakan Peuteuy" readonly>
+                                    <div class="invalid-feedback" id="error-kelurahan" value="{{$data->kartuKeluarga->kelurahan}}"></div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="kecamatan">Kecamatan</label>
+                                    <input type="text" name="kecamatan" id="kecamatan" class="form-control" value="Cicalengka" readonly value="{{$data->kartuKeluarga->kecamatan}}">
+                                    <div class="invalid-feedback" id="error-kecamatan"></div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="provinsi">Provinsi</label>
+                                    <input type="text" name="provinsi" id="provinsi" class="form-control" value="Jawa Barat" readonly value="{{$data->kartuKeluarga->provinsi}}">
+                                    <div class="invalid-feedback" id="error-provinsi"></div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="golongan_keluarga">Golongan Keluarga</label>
+                                    <select name="golongan_keluarga" id="golongan_keluarga" class="form-control">
+                                        <option value="{{$data->kartuKeluarga->golongan_keluarga}}">{{$data->kartuKeluarga->golongan_keluarga}}</option>
+                                        <option value="Mampu">Mampu</option>
+                                        <option value="Tidak mampu">Tidak mampu</option>
+                                    </select>
+                                    <div class="invalid-feedback" id="error-golongan_keluarga"></div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="No.Hp">No.Hp</label>
+                                    <input type="text" name="no_hp" id="no_hp" name="no_hp" class="form-control" value="{{$data->no_hp}}">
+                                </div>
                                 <div class="form-group col-md-3">
                                     <button type="button" class="btn btn-lg btn-primary" id="inputData">Input</button>
                                 </div>
@@ -138,22 +194,30 @@
 <script>
     $('#inputData').click(function () {
         form = $('#formPenduduk').serialize();
-        // console.log(form);
+        console.log(form);
         // $('.form-control').addClass('is-valid');
         $('.form-control').removeClass('is-invalid');
         $('.invalid-feedback').text('');
         $.ajax({
-            url:`{{route('penduduk.create')}}`,
+            url:`{{route('penduduk.update')}}`,
             method:'post',
             data: form,
             success: function (response) {
                 console.log(response);
-                // swal('Sukses', 'Berhasil input data,'success');
-                swal('Sukses',response.message,'success');
-                $('#formPenduduk')[0].reset()
+                if (response.status == 'error') {
+                    swal('Gagal',response.message,'error');
+                    $('#error-no_kk').text(response.message)
+                    $('#no_kk').addClass('is-invalid');
+                    $('#error-no_kk').text(response.message)
+                    
+                } else if (response.status == 'success') {
+                    // $('#formPenduduk')[0].reset()
+                    swal('Sukses',response.message,'success');
+                    
+                }
             }, 
             error: function (response) {
-                // console.log(response.responseJSON.errors);
+                console.log(response.responseJSON.errors);
                 errors = response.responseJSON.errors;
                 // if (errors) {
                 //     if(errors.golongan_keluarga) {
