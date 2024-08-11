@@ -11,11 +11,13 @@
   <link rel="stylesheet" href={{asset('assets/modules/fontawesome/css/all.min.css')}}>
 
   <!-- CSS Libraries -->
+  <link rel="stylesheet" href="{{asset('assets/modules/jquery-ui/jquery-ui.css')}}">
   <link rel="stylesheet" href={{asset('assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.css')}}>
   <link rel="stylesheet" href={{asset('assets/modules/datatables/scroller.bootstrap4.css')}}>
-  {{-- <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.4.3/css/scroller.bootstrap4.css"> --}}
-  {{-- <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.12.1/css/keyTable.bootstrap4.css"> --}}
   <link rel="stylesheet" href={{asset('assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css')}}>
+  <link rel="stylesheet" href="{{asset('assets/select2/select2.min.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/modules/jquery-selectric/selectric.css')}}">
+  @stack('libraries-css')
 
   <!-- Template CSS -->
   <link rel="stylesheet" href={{asset('assets/css/style.css')}}>
@@ -29,7 +31,9 @@
 
   gtag('config', 'UA-94034622-3');
 </script>
-<!-- /END GA --></head>
+<!-- /END GA -->
+@route
+</head>
 
 <body>
   <div id="app">
@@ -76,6 +80,8 @@
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href=" {{route('data.penduduk')}} ">Data Penduduk</a></li>
                 <li><a class="nav-link" href=" {{route('penduduk.input')}} ">Input Data Penduduk</a></li>
+                <li><a class="nav-link" href=" {{route('data.kk')}} ">Data Kartu Keluarga</a></li>
+                {{-- <li><a class="nav-link" href=" {{route('kk.input')}} ">Input Data Kartu Keluarga</a></li> --}}
                 {{-- <li><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li> --}}
               </ul>
             </li>
@@ -126,12 +132,14 @@
   {{-- <script src="https://cdn.datatables.net/keytable/2.12.1/js/keyTable.bootstrap4.js"></script> --}}
   <script src={{asset('assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js')}}></script>
   <script src= {{asset('assets/modules/datatables/Responsive-2.2.1/js/dataTables.responsive.js')}} ></script>
-  <script src={{asset('assets/modules/jquery-ui/jquery-ui.min.js')}}></script>
+  {{-- <script src={{asset('assets/modules/jquery-ui/jquery-ui.js')}}></script> --}}
+
   
   <script src={{asset('assets/modules/sweetalert/sweetalert.min.js')}}></script>
   
-  <script src={{asset('assets/modules/select2/dist/js/select2.full.min.js')}}></script>
+  <script src={{asset('assets/select2/select2.min.js')}}></script>
   <script src={{asset('assets/modules/jquery-selectric/jquery.selectric.min.js')}}></script>
+  @stack('libraries-js')
 
   <!-- Page Specific JS File -->
   @stack('scripts')

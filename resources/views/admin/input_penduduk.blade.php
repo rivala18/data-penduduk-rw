@@ -189,6 +189,7 @@
 
 @push('scripts')
 <script>
+    // $('#jenis_kelamin').select2();
     $('#inputData').click(function () {
         form = $('#formPenduduk').serialize();
         console.log(form);
