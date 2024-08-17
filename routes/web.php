@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[KartuKeluargaController::class,'test']);
+Route::get('/',[PendudukController::class,'dataPenduduk']);
 Route::get('/admin/data-penduduk', [PendudukController::class,'dataPenduduk'])->name('data.penduduk'); //return view table penduduk
 Route::post('/admin/data-penduduk/delete', [PendudukController::class,'hapusDataPenduduk'])->name('penduduk.delete'); //return delete data penduduk
 Route::get('/admin/input-data/penduduk', [PendudukController::class, 'inputDataPenduduk'])->name('penduduk.input'); //return view form input penduduk
@@ -25,7 +25,7 @@ Route::post('admin/data/penduduk/edit',[PendudukController::class,'updateDataPen
 
 Route::get('/admin/data-kartu-keluarga', [KartuKeluargaController::class,'index'])->name('data.kk');
 Route::get('/admin/edit-kartu-keluarga/{id}', [KartuKeluargaController::class,'edit'])->name('edit.kk');
-Route::get('/admin/edit-kartu-keluarga', [KartuKeluargaController::class,'updateDataPenduduk'])->name('update.kk');
+Route::post('/admin/update-kartu-keluarga', [KartuKeluargaController::class,'updateDataKk'])->name('update.kk');
 Route::get('/admin/getdata-kartu-keluarga', [KartuKeluargaController::class,'getData'])->name('getData.kk');
 Route::get('/admin/input-kartu-keluarga', [KartuKeluargaController::class,'inputDataKartuKeluarga'])->name('kk.input');
 

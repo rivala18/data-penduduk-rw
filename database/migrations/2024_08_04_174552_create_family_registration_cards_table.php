@@ -15,7 +15,7 @@ class CreateFamilyRegistrationCardsTable extends Migration
     {
         Schema::create('family_registration_cards', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('no_kk')->unique(); // Nomor Kartu Keluarga
+            $table->integer('no_kk'); // Nomor Kartu Keluarga
             $table->string('kepala_keluarga'); // Nama Kepala Keluarga
             $table->string('rt')->nullable(); // RT
             $table->string('rw')->nullable(); // RW

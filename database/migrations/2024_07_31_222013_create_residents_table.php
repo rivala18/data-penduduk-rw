@@ -15,7 +15,8 @@ class CreateResidentsTable extends Migration
     {
         Schema::create('residents', function (Blueprint $table) {
             $table->id();
-            $table->string('nik', 16)->unique(); // Nomor Induk Kependudukan
+            // $table->integer('nik', 16); // Nomor Induk Kependudukan
+            $table->integer('nik');
             $table->string('nama');
             $table->text('alamat'); // Alamat Lengkap
             $table->string('tempat_lahir');

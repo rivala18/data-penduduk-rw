@@ -110,10 +110,20 @@ class KartuKeluargaController extends Controller
     }
 
     public function updateDataKk(Request $request) {
-        return $request->all();
-    }
-    
-    public function store(Request $request) {
+        $kk = FamilyRegistrationCard::find($request->id);
+        $kk->update([
+            'no_kk' => $request->no_kk,
+            'kepala_keluarga' => $request->kepala_keluarga,
+            'rt' => $request->rt,
+            'rw' => $request->rw,
+            'kelurahan' => $request->kelurahan,
+            'kecamatan' => $request->kecamatan,
+            'kabupaten_kota' => $request->kabupaten_kota,
+            'provinsi' => $request->provinsi,
+            'golongan_keluarga' => $request->golongan_keluarga,
+        ]);
+
+        return 'uhuyy';
         
     }
 

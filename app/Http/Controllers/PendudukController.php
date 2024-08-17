@@ -210,27 +210,27 @@ class PendudukController extends Controller
     public function updateDataPenduduk(Request $request) {
         $no_kk = FamilyRegistrationCard::where('no_kk',$request->no_kk)->first();
         // $data = $this->resident->find($request->id);
-        $this->_validation($request);
-        // dd($no_kk);
-        $validation = $request->validate([
-            'nik'=>'required|numeric',
-            'no_kk'=>'required|numeric'
-        ],
-        [
-            'nik.required'=>'NIK harus di isi angka!!!',
-            'nik.numeric'=>'NIK harus di isi dengan angka!!!',
-            'no_kk.required'=>'No,KK harus di isi!!!',
-            'no_kk.numeric'=>'No,KK harus di isi angka!!!','no_kk.required'=>'No,KK harus di isi!!!'
-        ]);
-        if(!$no_kk){
-            return response()->json([
-                'status'=>'error',
-                'message'=>'Kartu keluarga belum terdaftar silahkan tambahkan data kartu keluarga terlebih dahulu'
-            ]);
-            // return true;
-        } 
-        else {
-            Resident::where('nik',$request->nik)->update([
+        // $this->_validation($request);
+        // // dd($no_kk);
+        // $validation = $request->validate([
+        //     'nik'=>'required|numeric',
+        //     'no_kk'=>'required|numeric'
+        // ],
+        // [
+        //     'nik.required'=>'NIK harus di isi angka!!!',
+        //     'nik.numeric'=>'NIK harus di isi dengan angka!!!',
+        //     'no_kk.required'=>'No,KK harus di isi!!!',
+        //     'no_kk.numeric'=>'No,KK harus di isi angka!!!','no_kk.required'=>'No,KK harus di isi!!!'
+        // ]);
+        // if(!$no_kk){
+        //     return response()->json([
+        //         'status'=>'error',
+        //         'message'=>'Kartu keluarga belum terdaftar silahkan tambahkan data kartu keluarga terlebih dahulu'
+        //     ]);
+        //     // return true;
+        // } 
+        $penduduk = Resident::where('id',$request->id_penduduk)->first();
+        $penduduk->update([
                 'nik'=>$request->nik,
                 'nama'=>$request->nama,
                 'alamat' => $request->alamat,
@@ -245,12 +245,28 @@ class PendudukController extends Controller
                 'kewarganegaraan'=>$request->kewarganegaraan,
                 'no_kk'=>$request->no_kk,
                 'no_hp'=>$request->no_hp
-            ]);
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data berhasil disimpan'
-            ], 200);
-        }
+        ]);
+        // Resident::where('id',$request->id)->where('nik',$request->nik)->update([
+        //     'nik'=>$request->nik,
+        //     'nama'=>$request->nama,
+        //     'alamat' => $request->alamat,
+        //     'tempat_lahir'=>$request->tempat_lahir,
+        //     'tanggal_lahir'=>$request->tanggal_lahir,
+        //     'jenis_kelamin'=>$request->jenis_kelamin,
+        //     'agama'=>$request->agama,
+        //     'status_perkawinan'=>$request->status_perkawinan,
+        //     'status_dalam_keluarga'=>$request->status_dalam_keluarga,
+        //     'pekerjaan'=>$request->pekerjaan,
+        //     'pendidikan_terakhir'=>$request->pendidikan_terakhir,
+        //     'kewarganegaraan'=>$request->kewarganegaraan,
+        //     'no_kk'=>$request->no_kk,
+        //     'no_hp'=>$request->no_hp
+        // ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data berhasil disimpan',
+            // 'id'=>$penduduk->id
+        ], 200);
     }
     public function hapusDataPenduduk(Request $request) {
         $data = $this->resident->find($request->id);

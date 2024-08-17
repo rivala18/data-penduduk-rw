@@ -16,7 +16,7 @@
                         <h4>Input Data Penduduk</h4>
                     </div>
                     <div class="card-body">
-                        <form action="#" id="formPenduduk" class="needs-validation" novalidate>
+                        <form action="{{route('update.kk')}}" id="formPenduduk" class="needs-validation" novalidate>
                             @csrf
                             <div class="form-row">
                                 <div class="form-group col-md-4">
@@ -27,7 +27,8 @@
                                 <div class="form-group col-md-4">
                                     <label for="kepala_keluarga">Kepala Keluarga</label>
                                     <input type="text" name="kepala_keluarga" id="kepala_keluarga" class="form-control" value="{{$data->kepala_keluarga}}" placeholder="Masukan NIK">
-                                    <input type="hidden" name="nik" id="nik">
+                                    <input type="hidden" name="nik" id="nik" value="{{$data->nik}}">
+                                    <input type="hidden" name="id" id="idKK" value="{{$data->id}}">
 
                                     
                                     <div class="invalid-feedback" id="error-kepala_keluarga"></div>
@@ -131,15 +132,14 @@
 
     $('#inputData').click(function () {
         form = $('#formPenduduk').serialize();
-        q = $("#no_kk").val();
         console.log(form);
         // $('.form-control').addClass('is-valid');
         $('.form-control').removeClass('is-invalid');
         $('.invalid-feedback').text('');
         $.ajax({
-            url:`{{route('getDataNik.kk')}}`,
-            method:'get',
-            data: q,
+            url:`{{route('update.kk')}}`,
+            method:'post',
+            data: form,
             success: function (response) {
                 console.log(response);
 
