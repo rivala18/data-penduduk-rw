@@ -25,6 +25,7 @@ Route::post('admin/data/penduduk/edit',[PendudukController::class,'updateDataPen
 
 Route::get('/admin/data-kartu-keluarga', [KartuKeluargaController::class,'index'])->name('data.kk');
 Route::get('/admin/edit-kartu-keluarga/{id}', [KartuKeluargaController::class,'edit'])->name('edit.kk');
+Route::get('/admin/hapus-kartu-keluarga/{id}', [KartuKeluargaController::class,'hapusKk'])->name('hapus.kk');
 Route::post('/admin/update-kartu-keluarga', [KartuKeluargaController::class,'updateDataKk'])->name('update.kk');
 Route::get('/admin/getdata-kartu-keluarga', [KartuKeluargaController::class,'getData'])->name('getData.kk');
 Route::get('/admin/input-kartu-keluarga', [KartuKeluargaController::class,'inputDataKartuKeluarga'])->name('kk.input');

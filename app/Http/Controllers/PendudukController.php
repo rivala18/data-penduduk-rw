@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FamilyRegistrationCard;
 use App\Models\Resident;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -202,6 +203,8 @@ class PendudukController extends Controller
     }
     public function editDataPenduduk($id) {
         $data = $this->resident->find($id);
+        $umur = Carbon::parse($data->tanggal_lahir)->age;
+        dd($data->age);
         // return $data->kartuKeluarga->kecamatan;
         return view('admin.edit_penduduk',[
             'data'=>$data
@@ -294,6 +297,9 @@ class PendudukController extends Controller
             })
             ->addColumn('no_kk', function ($row) {
                 return $row->kartuKeluarga->no_kk;
+            })
+            ->addColumn('umur', function ($row) {
+                return  $row->age;
             })
             ->addColumn('action', function($row){
                 return '

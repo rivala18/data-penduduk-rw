@@ -29,6 +29,7 @@
                                         <th>Nama</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Tanggal Lahir</th>
+                                        <th>Umur</th>
                                         <th>Tempat Lahir</th>
                                         <th>RT</th>
                                         <th>Golongan Keluarga</th>
@@ -65,6 +66,7 @@
                     { data: 'nama', name: 'nama' }, 
                     { data: 'jenis_kelamin', name: 'jenis_kelamin' },
                     { data: 'tanggal_lahir', name: 'tanggal_lahir' },
+                    { data: 'umur', name: 'umur' },
                     { data: 'tempat_lahir', name: 'tempat_lahir' },
                     { data: 'rt', name: 'rt' },
                     { data: 'golongan_keluarga', name: 'golongan_keluarga' },

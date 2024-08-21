@@ -89,7 +89,7 @@ class KartuKeluargaController extends Controller
                             <i class="far fa-edit">
                             </i>
                         </a> 
-                        <a href="#table-1" class="btn btn-danger btn-icon btn-sm hapusPenduduk" data-id="'.$row->id.'">
+                        <a href="'.route('hapus.kk',$row->id).'" class="btn btn-danger btn-icon btn-sm hapusPenduduk" data-id="'.$row->id.'">
                             <i class="fas fa-trash">
                             </i>
                         </a> 
@@ -110,6 +110,7 @@ class KartuKeluargaController extends Controller
     }
 
     public function updateDataKk(Request $request) {
+        $this->_validation($request);
         $kk = FamilyRegistrationCard::find($request->id);
         $kk->update([
             'no_kk' => $request->no_kk,
@@ -122,9 +123,30 @@ class KartuKeluargaController extends Controller
             'provinsi' => $request->provinsi,
             'golongan_keluarga' => $request->golongan_keluarga,
         ]);
+        $data = collect($kk);
+        $penduduk = Resident::where('no_kk',$request->id_kk)->update([
+                'no_kk'=>$request->no_kk
+        ]);
+        // Resident::where('id',$kk->id)->update([
+        // ]);
 
-        return 'uhuyy';
+        // foreach ($penduduk as $data) {
+        // }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data berhasil disimpan'
+        ], 200);
         
+    }
+
+    public function hapusKk($id) {
+        $kartu_keluarga = FamilyRegistrationCard::find($id);
+        $penduduk = Resident::where('no_kk',$kartu_keluarga->no_kk)->get();
+        $kartu_keluarga->delete();
+        $penduduk->delete();
+        // dd($penduduk);
+        return 'berhasil';
     }
 
 }
