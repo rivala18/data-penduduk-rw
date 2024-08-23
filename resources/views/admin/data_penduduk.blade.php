@@ -19,26 +19,26 @@
                         <h4>Data Penduduk</h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-reponsive">
-                            <table class="table table-bordered table-lg" id="table-1">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">#</th>
-                                        <th>NIK</th>
-                                        <th>No.KK</th>
-                                        <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Tanggal Lahir</th>
-                                        <th>Umur</th>
-                                        <th>Tempat Lahir</th>
-                                        <th>RT</th>
-                                        <th>Golongan Keluarga</th>
-                                        <th>Status Dalam Keluarga</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <table class="table table-bordered table-lg" id="table-1">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>NIK</th>
+                                    <th>No.KK</th>
+                                    <th>Nama</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Tanggal Lahir</th>
+                                    <th>Umur</th>
+                                    <th>Tempat Lahir</th>
+                                    <th>RT</th>
+                                    <th>Golongan Keluarga</th>
+                                    <th>Status Dalam Keluarga</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        {{-- <div class="table-reponsive">
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -56,16 +56,16 @@
                 serverSide: true,
                 scrollCollapse: true,
                 scroller: true,
-                scrollY: 500,
+                scrollY: 10000,
                 paging: true,
                 ajax: '{{ route('penduduk.data') }}',
                 columns: [
-                    { data: 'id', name: 'id' },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'nik', name: 'nik' },
                     { data: 'no_kk', name: 'no_kk' },
                     { data: 'nama', name: 'nama' }, 
                     { data: 'jenis_kelamin', name: 'jenis_kelamin' },
-                    { data: 'tanggal_lahir', name: 'tanggal_lahir' },
+                    { data: 'tanggal_carbon', name: 'tanggal_carbon' },
                     { data: 'umur', name: 'umur' },
                     { data: 'tempat_lahir', name: 'tempat_lahir' },
                     { data: 'rt', name: 'rt' },

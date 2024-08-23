@@ -89,17 +89,18 @@ class KartuKeluargaController extends Controller
                             <i class="far fa-edit">
                             </i>
                         </a> 
-                        <a href="'.route('hapus.kk',$row->id).'" class="btn btn-danger btn-icon btn-sm hapusPenduduk" data-id="'.$row->id.'">
+                        <a href="#table-1" class="btn btn-danger btn-icon btn-sm hapusPenduduk" data-id="'.$row->id.'">
                             <i class="fas fa-trash">
                             </i>
                         </a> 
-                        <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-info btn-icon btn-sm">
+                        <a href="'.route('detail.kk', $row->no_kk).'" class="btn btn-info btn-icon btn-sm">
                             <i class="far fa-user">
                             </i>
                         </a> 
                         ';
                         
                 })
+                ->addIndexColumn()
                 ->make('true');
     }
 
@@ -140,13 +141,26 @@ class KartuKeluargaController extends Controller
         
     }
 
-    public function hapusKk($id) {
-        $kartu_keluarga = FamilyRegistrationCard::find($id);
-        $penduduk = Resident::where('no_kk',$kartu_keluarga->no_kk)->get();
+    public function hapusKk(Request $request) {
+        $kartu_keluarga = FamilyRegistrationCard::find($request->id);
+        Resident::where('no_kk',$kartu_keluarga->no_kk)->delete();
         $kartu_keluarga->delete();
-        $penduduk->delete();
         // dd($penduduk);
-        return 'berhasil';
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data berhasil disimpan',
+            // 'id'=>$penduduk->id
+        ], 200);
+    }
+
+    public function detail($id){
+        $kartu_keluarga = FamilyRegistrationCard::where('no_kk',$id)->first();
+        $penduduk = Resident::where('no_kk',$kartu_keluarga->no_kk)->where('status_dalam_keluarga','!=','Kepala Keluarga')->get();
+        // dd($kartu_keluarga->no_kk,$penduduk);
+        return view('admin.detail_kartu_keluarga',[
+            'kartu_keluarga'=> $kartu_keluarga,
+            'penduduk'=>$penduduk
+        ]);
     }
 
 }

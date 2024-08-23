@@ -54,11 +54,11 @@
                 serverSide: true,
                 scrollCollapse: true,
                 scroller: true,
-                scrollY: 500,
+                scrollY: 10000,
                 paging: true,
                 ajax: '{{ route('getData.kk') }}',
                 columns: [
-                    { data: 'id', name: 'id' },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'no_kk', name: 'no_kk' },
                     { data: 'kepala_keluarga', name: 'kepala_keluarga' },
                     { data: 'rt', name: 'rt' },
@@ -70,46 +70,43 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false },
                 ],
             });
-            // $('#table-1').on('click','.hapusPenduduk',function (e) {
-            //     e = $(this).data('id');
-            //     var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            //     table = $('#table-1').DataTable();
-            //     swal({
-            //         title: 'Apakah kamu yakin ingin menghapus?',
-            //         text: 'data yang di hapus tidak akan kembali',
-            //         icon: 'warning',
-            //         buttons: true,
-            //         dangerMode: true,
-            //         })
-            //         .then((willDelete) => {
-            //         if (willDelete) {
-            //             $.ajax({
-            //                 url: '{{route('penduduk.delete')}}',
-            //                 method: 'post',
-            //                 data: {
-            //                     _token: csrfToken,
-            //                     id: e
-            //                 },success: function (response) {
-            //                     // console.log(response);
-            //                     table.ajax.reload();
-            //                 },error: function (response) {
-            //                     // console.log(response);
-            //                 }
+            $('#table-1').on('click','.hapusPenduduk',function (e) {
+                e = $(this).data('id');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                table = $('#table-1').DataTable();
+                swal({
+                    title: 'Apakah kamu yakin ingin menghapus?',
+                    text: 'data yang di hapus tidak akan kembali',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '{{route('hapus.kk')}}',
+                            method: 'post',
+                            data: {
+                                _token: csrfToken,
+                                id: e
+                            },success: function (response) {
+                                // console.log(response);
+                                table.ajax.reload();
+                            },error: function (response) {
+                                // console.log(response);
+                            }
 
-            //             })
-            //         swal('Data berhasil di hapus'+e, {
-            //             icon: 'success',
-            //         });
-            //         } else {
-            //         swal('Data tidak dihapus');
-            //         }
-            //     });
-            // })
-            // $('.hapusPenduduk').click(function(e){
-            //     e = 'uhuyy';
-            //     console.log(e);
-            // })
+                        })
+                    swal('Data berhasil di hapus'+e, {
+                        icon: 'success',
+                    });
+                    } else {
+                    swal('Data tidak dihapus');
+                    }
+                });
+            })
     });
+
 </script>
     
 @endpush

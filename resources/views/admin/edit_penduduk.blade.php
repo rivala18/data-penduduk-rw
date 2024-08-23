@@ -45,6 +45,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="no_kk">NO KK</label>
                                     <input type="number" class="form-control" name="no_kk" id="no_kk" value="{{$data->no_kk}}">
+                                    <input type="hidden" class="form-control" name="id_kk" id="id_kk">
                                     <div class="invalid-feedback" id="error-no_kk"></div>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -190,8 +191,40 @@
 
 @endsection
 
+@push('libraries-css')
+    <link rel="stylesheet" href="{{asset('assets/jquery-ui/jquery-ui.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('assets/jquery-ui/jquery-ui.theme.css')}}"> --}}
+    <link rel="stylesheet" href="{{asset('assets/jquery-ui/jquery-ui.structure.css')}}">
+@endpush
+@push('libraries-js')
+    <script src="{{asset('assets/jquery-ui/jquery-ui.js')}}"></script>
+    {{-- <script src="{{asset('assets/jquery-ui/external/jquery/jquery.js')}}"></script> --}}
+@endpush
+
 @push('scripts')
 <script>
+    $("#no_kk").autocomplete({
+            // source: combinedSource,
+            source: function (request, response) {
+                $.ajax({
+                    url:'{{route('penduduk.getDataNoKk')}}',
+                    dataType: 'json',
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data)
+                    }
+                })
+            },
+            minLength: 2, // Minimum panjang input sebelum pencarian dimulai
+            select: function(event, ui) {
+                console.log("Selected: " + ui.item.label); // Tangani item yang dipilih
+                console.log(ui);
+                $('no_kk').val(ui.item.value)
+                // $('#nik').val(ui.item.nik)
+            }
+        });
     $('#inputData').click(function () {
         form = $('#formPenduduk').serialize();
         console.log(form);

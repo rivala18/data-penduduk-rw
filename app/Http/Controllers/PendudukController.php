@@ -7,9 +7,10 @@ use App\Models\Resident;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+// use Carbpm
 
 class PendudukController extends Controller
-{
+{ 
     protected $resident;
     protected $kartu_keluarga;
 
@@ -204,34 +205,26 @@ class PendudukController extends Controller
     public function editDataPenduduk($id) {
         $data = $this->resident->find($id);
         $umur = Carbon::parse($data->tanggal_lahir)->age;
-        dd($data->age);
+        // dd($data->age);
         // return $data->kartuKeluarga->kecamatan;
         return view('admin.edit_penduduk',[
             'data'=>$data
         ]);
     }
     public function updateDataPenduduk(Request $request) {
+        $this->_validation($request);
+        if ($request->status_dalam_keluarga =='Kepala Keluarga') {
+            $request->validate([
+                    'no_kk'=>'required|unique:family_registration_cards,no_kk|numeric',
+                ],
+                [
+                    'no_kk.unique'=>'Kepala Keluarga Sudah terdaftar!!!',
+                    'no_kk.required'=>'No,KK harus di isi!!!',
+                    'no_kk.numeric'=>'No,KK harus di isi angka!!!',
+
+                ]);
+            }
         $no_kk = FamilyRegistrationCard::where('no_kk',$request->no_kk)->first();
-        // $data = $this->resident->find($request->id);
-        // $this->_validation($request);
-        // // dd($no_kk);
-        // $validation = $request->validate([
-        //     'nik'=>'required|numeric',
-        //     'no_kk'=>'required|numeric'
-        // ],
-        // [
-        //     'nik.required'=>'NIK harus di isi angka!!!',
-        //     'nik.numeric'=>'NIK harus di isi dengan angka!!!',
-        //     'no_kk.required'=>'No,KK harus di isi!!!',
-        //     'no_kk.numeric'=>'No,KK harus di isi angka!!!','no_kk.required'=>'No,KK harus di isi!!!'
-        // ]);
-        // if(!$no_kk){
-        //     return response()->json([
-        //         'status'=>'error',
-        //         'message'=>'Kartu keluarga belum terdaftar silahkan tambahkan data kartu keluarga terlebih dahulu'
-        //     ]);
-        //     // return true;
-        // } 
         $penduduk = Resident::where('id',$request->id_penduduk)->first();
         $penduduk->update([
                 'nik'=>$request->nik,
@@ -249,22 +242,6 @@ class PendudukController extends Controller
                 'no_kk'=>$request->no_kk,
                 'no_hp'=>$request->no_hp
         ]);
-        // Resident::where('id',$request->id)->where('nik',$request->nik)->update([
-        //     'nik'=>$request->nik,
-        //     'nama'=>$request->nama,
-        //     'alamat' => $request->alamat,
-        //     'tempat_lahir'=>$request->tempat_lahir,
-        //     'tanggal_lahir'=>$request->tanggal_lahir,
-        //     'jenis_kelamin'=>$request->jenis_kelamin,
-        //     'agama'=>$request->agama,
-        //     'status_perkawinan'=>$request->status_perkawinan,
-        //     'status_dalam_keluarga'=>$request->status_dalam_keluarga,
-        //     'pekerjaan'=>$request->pekerjaan,
-        //     'pendidikan_terakhir'=>$request->pendidikan_terakhir,
-        //     'kewarganegaraan'=>$request->kewarganegaraan,
-        //     'no_kk'=>$request->no_kk,
-        //     'no_hp'=>$request->no_hp
-        // ]);
         return response()->json([
             'status' => 'success',
             'message' => 'Data berhasil disimpan',
@@ -284,7 +261,7 @@ class PendudukController extends Controller
         }
     }
     public function getData() {
-        $penduduk = Resident::orderBy('nama','asc')->get();
+        $penduduk = Resident::where('status_dalam_keluarga','!=','Kepala Keluarga')->orderBy('nama','asc')->get();
         return DataTables::of($penduduk)
             ->addColumn('rt', function ($row) {
                 return $row->kartuKeluarga->rt;
@@ -301,6 +278,9 @@ class PendudukController extends Controller
             ->addColumn('umur', function ($row) {
                 return  $row->age;
             })
+            ->addColumn('tanggal_carbon', function ($row) {
+                return  Carbon::parse($row->tanggal_lahir)->format('d M Y');
+            })
             ->addColumn('action', function($row){
                 return '
                     <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-primary btn-icon btn-sm">
@@ -311,14 +291,36 @@ class PendudukController extends Controller
                         <i class="fas fa-trash">
                         </i>
                     </a> 
-                    <a href="'.route('penduduk.edit', $row->id).'" class="btn btn-info btn-icon btn-sm">
+                    <a href="'.route('penduduk.detail', $row->id).'" class="btn btn-info btn-icon btn-sm">
                         <i class="far fa-user">
                         </i>
                     </a> 
                     ';
                     
             })
+            ->addIndexColumn()
             ->make(true);
+    }
+    public function getDataNoKk(Request $request) {
+        $search = $request->term;
+        $data = FamilyRegistrationCard::where('no_kk','like','%'.$search.'%')->get();
+        $response = [];
+
+        foreach ($data as $item) {
+            $response[] = [
+                'label'=>'Nama :'.$item->kepala_keluarga.' | No.KK:'.$item->no_kk,
+                'value'=>$item->no_kk
+                // 'nik'=>$item->nik
+            ];
+        }
+        return response()->json($response);
+    }
+    public function detail($id){
+        $data = Resident::find($id);
+        // dd($data);
+        return view('admin.detail_penduduk',[
+            'data'=>$data
+        ]);
     }
     
 }
